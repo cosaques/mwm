@@ -12,7 +12,7 @@ func TestDataFeeder_LoadFromCsv(t *testing.T) {
 	}
 
 	df := &DataFeeder{}
-	err = df.LoadFromCsv(csvFile)
+	err = df.loadFromCsv(csvFile)
 	if err != nil {
 		t.Fatalf("error %s happened", err)
 	}

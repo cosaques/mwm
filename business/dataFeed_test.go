@@ -19,7 +19,7 @@ func Test_parse(t *testing.T) {
 		{
 			"CorrectString",
 			args{"01;2020-05-13;0;16;09;83001"},
-			&dataFeed{"01", time.Date(2020, 5, 13, 0, 0, 0, 0, time.UTC), 0, 16, "09", 83001},
+			&dataFeed{"01", time.Date(2020, 5, 13, 0, 0, 0, 0, time.UTC), 0, 16, "09"},
 			false,
 		},
 	}

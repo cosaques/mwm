@@ -13,7 +13,6 @@ type dataFeed struct {
 	posTests   int
 	totalTests int
 	age        string
-	population int
 }
 
 // parse parses string in format
@@ -39,17 +38,11 @@ func parse(s string) (*dataFeed, error) {
 		return nil, err
 	}
 
-	population, err := strconv.Atoi(feed[5])
-	if err != nil {
-		return nil, err
-	}
-
 	return &dataFeed{
 		department: feed[0],
 		date:       date,
 		posTests:   posTests,
 		totalTests: totalTests,
 		age:        feed[4],
-		population: population,
 	}, nil
 }
