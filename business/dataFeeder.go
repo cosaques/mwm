@@ -72,6 +72,10 @@ func (df *dataFeeder) ApiHandler(w http.ResponseWriter, r *http.Request) {
 
 func (df *dataFeeder) loadFromCsv(csvFile io.Reader) error {
 	csvReader := csv.NewReader(csvFile)
+
+	// clean old feeds
+	df.feeds = []*dataFeed{}
+
 	isHeader := true
 	for csvLine, err := csvReader.Read(); err != io.EOF; csvLine, err = csvReader.Read() {
 		if isHeader {
