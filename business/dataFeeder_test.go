@@ -11,7 +11,7 @@ func TestDataFeeder_LoadFromCsv(t *testing.T) {
 		t.Fatal("cannot open file")
 	}
 
-	df := &dataFeeder{}
+	df := NewDataFeeder()
 	err = df.loadFromCsv(csvFile)
 	if err != nil {
 		t.Fatalf("error %s happened", err)

@@ -8,11 +8,11 @@ import (
 )
 
 type dataFeed struct {
-	department string
-	date       time.Time
-	posTests   int
-	totalTests int
-	age        string
+	Department string    `json:"Department"`
+	Date       time.Time `json:"Date"`
+	PosTests   int       `json:"PositiveCases"`
+	TotalTests int       `json:"TotalTests"`
+	Age        string    `json:"Age"`
 }
 
 // parse parses string in format
@@ -39,10 +39,10 @@ func parse(s string) (*dataFeed, error) {
 	}
 
 	return &dataFeed{
-		department: feed[0],
-		date:       date,
-		posTests:   posTests,
-		totalTests: totalTests,
-		age:        feed[4],
+		Department: feed[0],
+		Date:       date,
+		PosTests:   posTests,
+		TotalTests: totalTests,
+		Age:        feed[4],
 	}, nil
 }

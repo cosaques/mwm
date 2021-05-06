@@ -7,16 +7,19 @@ import (
 	"io"
 	"net/http"
 	"strings"
+	"time"
 )
 
 type dataFeeder struct {
-	feeds []*dataFeed
-	deps  map[string]bool
+	feeds    []*dataFeed
+	deps     map[string]bool
+	depDates map[depDate][]*dataFeed
 }
 
 func NewDataFeeder() *dataFeeder {
 	return &dataFeeder{
-		deps: make(map[string]bool),
+		deps:     make(map[string]bool),
+		depDates: make(map[depDate][]*dataFeed),
 	}
 }
 
@@ -51,6 +54,16 @@ func (df *dataFeeder) ApiHandler(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(200)
 		w.Header().Set("content-type", "application/json")
 		json.NewEncoder(w).Encode(resp)
+	case "stat":
+		dep := segs[4]
+		time, err := time.Parse("2006-01-02", segs[5])
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusBadRequest)
+			return
+		}
+		w.WriteHeader(200)
+		w.Header().Set("content-type", "application/json")
+		json.NewEncoder(w).Encode(df.depDates[depDate{dep, time}])
 	default:
 		w.WriteHeader(http.StatusNotFound)
 		fmt.Fprintf(w, "Action %s not found", action)
@@ -78,5 +91,13 @@ func (df *dataFeeder) loadFromCsv(csvFile io.Reader) error {
 
 func (df *dataFeeder) addDataFeed(feed *dataFeed) {
 	df.feeds = append(df.feeds, feed)
-	df.deps[feed.department] = true
+	df.deps[feed.Department] = true
+	df.depDates[depDate{feed.Department, feed.Date}] = append(df.depDates[depDate{feed.Department, feed.Date}], feed)
 }
+
+type (
+	depDate struct {
+		department string
+		date       time.Time
+	}
+)
